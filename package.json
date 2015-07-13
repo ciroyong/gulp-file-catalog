@@ -1,8 +1,8 @@
 {
-  "name": "gulp-file-catalog",
-  "description": "Auto create catalog of files in given paths",
+  "name": "gulp-filemap",
+  "description": "Auto create map of files in given paths",
   "version": "0.0.1",
-  "repository": "ciroyong/gulp-file-catalog",
+  "repository": "ciroyong/gulp-filemap",
   "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
   "files": [
     "index.js"
@@ -36,7 +36,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/ciroyong/gulp-file-catalog/raw/master/LICENSE"
+      "url": "http://github.com/ciroyong/gulp-filemap/raw/master/LICENSE"
     }
   ]
 }
