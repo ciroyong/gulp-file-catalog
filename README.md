@@ -1,1 +1,1 @@
-# gulp-file-catalog
+# gulp-filemap
