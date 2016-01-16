@@ -1,7 +1,7 @@
 {
   "name": "gulp-filepath-list",
   "description": "Create filepaths list with specified index",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": "ciroyong/gulp-filepath-list",
   "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
   "files": [

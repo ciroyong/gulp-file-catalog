@@ -6,18 +6,18 @@ $through2 = require('through2');
 $minimatch = require('minimatch');
 $path = require('path');
 $gutil = require('gulp-util');
-$PluginError = gutil.PluginError;
+$PluginError = $gutil.PluginError;
 _op = Object.prototype;
 chunk = {};
 
-function __hasProp(obj, name) {
+function _hasProp(obj, name) {
     return _op.hasOwnProperty.call(obj, name);
 }
 
 module.exports = function(opt, handler) {
-    var out, cwd, exclude;
+    var out, cwd, ext, _ext, exclude;
 
-    cwd = "", filter = false, exclude = false;
+    cwd = "", ext = false, exclude = false;
 
     if(typeof opt === "string") {
         out = opt;
@@ -34,6 +34,17 @@ module.exports = function(opt, handler) {
             cwd = opt.cwd;
         }
 
+        if(_hasProp(opt, "ext")) {
+            _ext = opt.ext;
+            if(typeof _ext === "string") {
+                ext = [_ext]
+            }
+
+            if(_ext instanceof Array) {
+                ext = _ext
+            }
+        }
+
         if(_hasProp(opt, "exclude")) {
             if (typeof opt.exclude === "string") {
                 exclude = [opt.exclude];
@@ -44,6 +55,25 @@ module.exports = function(opt, handler) {
             }
         }
     }
+
+    function _filterExt(_ext) {
+        var allowed;
+        
+        allowed = false;
+
+        if (!ext) {
+            return true;
+        }
+
+        for (var i = ext.length - 1; i >= 0; i--) {
+            if (ext[i] === _ext) {
+                allowed = true;
+                break;
+            }
+        };
+
+        return allowed;
+    }
     /***
     Path.parse('/home/user/dir/file.txt')
     @property: root, "/",
@@ -52,9 +82,8 @@ module.exports = function(opt, handler) {
     @property: ext, ".txt",
     @property: name, "file"
     ***/
-    return $through2({objectMode: true, allowHalfOpen: false}, function(buffer, encoding, callback) {
-        var basename, ref, root, dir, base, ext, name, relative;
-
+    return $through2.obj(function(buffer, encoding, callback) {
+        var ref, root, dir, base, ext, name, relative, exted;
         if(!buffer.stat.isFile()) {
             callback();
             return;
@@ -63,9 +92,10 @@ module.exports = function(opt, handler) {
         ref = $path.parse(buffer.path);
         root = ref.root, dir = ref.dir, base = ref.base, ext = ref.ext, name = ref.name;
 
+        relative = $path.relative(cwd, dir);
         if(exclude) {
             for (var i = exclude.length - 1; i >= 0; i--) {
-                if(minimatch(dir, exclude[i])) {
+                if($minimatch(relative, exclude[i])) {
                     callback();
                     return;
                 }
@@ -76,15 +106,19 @@ module.exports = function(opt, handler) {
             name = handler(name);
         }
 
-        relative = $path.relative(cwd, path);
+        for (var i = ext.length - 1; i >= 0; i--) {
+            ext[i]
+        };
 
-        chunk[name] = relative.split($path.sep);
-
+        if(_filterExt(ext)) {
+            chunk[name] = relative.split($path.sep);
+            chunk[name].push(base);
+        }
+        
         callback();
     }, function (callback) {
         var file;
-
-        file = new gutil.File({path: out});
+        file = new $gutil.File({path: out});
         file.contents = new Buffer(JSON.stringify(chunk));
         this.push(file);
         callback();
