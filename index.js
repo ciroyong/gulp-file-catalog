@@ -92,7 +92,7 @@ module.exports = function(opt, handler) {
         ref = $path.parse(buffer.path);
         root = ref.root, dir = ref.dir, base = ref.base, ext = ref.ext, name = ref.name;
 
-        relative = $path.relative(cwd, dir);
+        relative = $path.relative(cwd, buffer.path);
         if(exclude) {
             for (var i = exclude.length - 1; i >= 0; i--) {
                 if($minimatch(relative, exclude[i])) {
@@ -112,7 +112,7 @@ module.exports = function(opt, handler) {
 
         if(_filterExt(ext)) {
             chunk[name] = relative.split($path.sep);
-            chunk[name].push(base);
+            // chunk[name].push(base);
         }
         
         callback();
