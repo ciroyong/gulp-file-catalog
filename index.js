@@ -1,12 +1,12 @@
 'use strict';
 
-var $minimatch, $through2, $path, $gutil, $PluginError, _op, chunk;
+var $minimatch, $through2, $path, $PluginError, _op, chunk;
 
 $through2 = require('through2');
 $minimatch = require('minimatch');
 $path = require('path');
-$gutil = require('gulp-util');
-$PluginError = $gutil.PluginError;
+$PluginError = require("plugin-error");
+$Vinyl = require("vinyl");
 _op = Object.prototype;
 chunk = {};
 
@@ -25,7 +25,7 @@ module.exports = function(opt, handler) {
 
     if(typeof opt === "object") {
         if(!_hasProp(opt, "out")) {
-            throw new PluginError('gulp-file-catalog', 'Missing options "out"');
+            throw new PluginError('gulp-file-catalog', {message: 'Missing options "out"'});
         }
 
         out = opt.out;
@@ -118,7 +118,7 @@ module.exports = function(opt, handler) {
         callback();
     }, function (callback) {
         var file;
-        file = new $gutil.File({path: out});
+        file = new Vinyl({path: out});
         file.contents = new Buffer(JSON.stringify(chunk));
         this.push(file);
         callback();

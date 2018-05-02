@@ -1,7 +1,7 @@
 {
   "name": "gulp-filepath-list",
   "description": "Create filepaths list with specified index",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": "ciroyong/gulp-filepath-list",
   "author": "ciroyong <ciroyong@gmail.com> (http://oldfe.com/)",
   "files": [
@@ -11,9 +11,10 @@
     "gulp plugin filepath php require"
   ],
   "dependencies": {
-    "gulp-util": "latest",
-    "through2": "latest",
-    "minimatch": "latest"
+    "vinyl": "~2.1.0",
+    "through2": "~2.0.3",
+    "minimatch": "~3.0.4",
+    "plugin-error": "~1.0.1"
   },
   "licenses": [
     {
